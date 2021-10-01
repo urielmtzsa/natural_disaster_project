@@ -1,0 +1,98 @@
+---
+title: "Proyecto intermedio Estadística Computacional"
+author: "Uriel Martínez Sánchez"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float: true
+    theme: spacelab
+---
+
+## Ambiente de trabajo
+
+Antes de comenzar el proyecto, lo primero es cargar todas las librerías necesarias para trabajar y para hacer reproducibles los resultados en cualquier otro ambiente de trabajo. Si se detecta que alguna librería no se encuentra instalada entonces se descarga. Además, se establece el directorio de trabajo como el lugar donde se encuentre guardado este archivo Rmd.
+
+#### Librerías y directorio de trabajo
+
+```{r cache=TRUE, include=FALSE}
+
+#Código para instalar y cargar todas las librerías necesarias para trabajar el proyecto
+pack_u<-c("rstudioapi","readxl","dplyr")
+pack_u_installed<-pack_u %in% installed.packages()
+pack_u_uninstalled<-pack_u[pack_u_installed==FALSE]
+install.packages(pack_u_uninstalled)
+lapply(pack_u, require, character.only = TRUE)
+
+```
+
+```{r cache=TRUE, echo=FALSE, comment=""}
+
+cat(c("Las librerías a utilizar son:\n",pack_u))
+
+#Línea para establecer el workdirectory igual al path donde se encuentre este archivo .Rmd
+setwd(dirname(rstudioapi::getSourceEditorContext()$path))
+cat(paste("El directorio de trabajo será:\n",getwd(),sep=""))
+
+
+```
+
+#### Variables
+
+A continuación se enlistan todas las variables definidas para el proceso ETL de creación del Data Frame. Si algún elemento cambia, se debería cambiar en esta sección.
+
+```{r cache=TRUE, echo=FALSE, comment="",results='asis'}
+
+dir.archivo<-paste(getwd(),"/","refugios_nayarit.xlsx",sep="")
+row.skip<-6
+col.names<-c("no","refugio","municipio","direccion","uso_inmueble","servicios","capacidad_personas","latitud","longitud","altitud","resposable","telefono")
+
+cat(paste("**1) Path del excel a leer y nombre del archivo:**"," \n\n",
+          "**Nombre variable: **", "*dir.archivo*"," \n\n",
+          "**Valor actual : **",dir.archivo," \n\n",
+          "**Comentario: ** Se asume que el excel a leer se encuentra en el directorio de trabajo, pero si no se encuentra aquí, sólo hay que cambiar esta variable. También se asume que el archivo se llama refugios_nayarit.xlsx, pero si también cambia, sólo hay que cambiar esta variable."," \n\n",sep=""))
+
+cat(paste("**2) Número de renglones que no se considerarán de cada hora del excel:**"," \n\n",
+          "**Nombre variable: **", "*row.skip*"," \n\n",
+          "**Valor actual : **",row.skip," \n\n",
+          "**Comentario: ** Se asume que cada pestaña del excel a leer comienza después de 6 renglones sin información. Si este asumption cambia, sólo hay que cambiar el valor de esta variable en esta sección."," \n\n",sep=""))
+
+cat(c("**3) Nombre y número de columnas:**"," \n\n",
+          "**Nombre variable: **", "*col.names*"," \n\n",
+          "**Valor actual : **"," \n\n"))
+cat(paste("- `", col.names, "`"), sep = "\n")
+cat(c("\n\n","**Comentario: **Se asume que el Data Frame cuenta con 12 columnas ordenadas como el vector por default. Si algo cambia en el nombre, orden, o número de columnas se debe cambiar este vector. **Nota:** El excel se lee sin los nombres de campo que tiene por default"," \n\n"))
+```
+
+## Extracción de la información
+
+Con la definición del ambiente de trabajo y las variables que podrían cambiar, a continuación se procedió a leer el excel a procesar para convertirlo en un Data Frame más fácil de trabajar, limpiar y procesar.
+
+Para la carga de todas las hojas del excel, se asumen los valores de variable considerados en la sección anterior. Además, se leen todas las hojas que el excel pudiera llegar a tener.
+
+```{r cache=TRUE, include=FALSE}
+sheets<-excel_sheets(dir.archivo)
+
+for(i in 1:length(sheets))
+{
+  base<-read_excel(dir.archivo,sheet=sheets[i],skip=row.skip,col_names = FALSE)
+  if(i==1){df<-base} else{df<-rbind(df,base)}
+}
+
+names(df)<-col.names
+
+
+```
+
+```{r cache=TRUE, echo=FALSE, comment=""}
+
+cat("El resultado es un Data Frame como el siguiente: \n")
+
+print(df)
+
+```
+
+
+
+
