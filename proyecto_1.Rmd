@@ -23,7 +23,7 @@ Antes de comenzar el proyecto, lo primero es cargar todas las librerías necesar
 ```{r cache=FALSE, include=FALSE}
 
 #Código para instalar y cargar todas las librerías necesarias para trabajar el proyecto
-pack_u<-c("rstudioapi","readxl","dplyr","knitr","kableExtra","ggplot2","tidyr")
+pack_u<-c("rstudioapi","readxl","dplyr","knitr","kableExtra","ggplot2","tidyr","leaflet","rgdal")
 pack_u_installed<-pack_u %in% installed.packages()
 pack_u_uninstalled<-pack_u[pack_u_installed==FALSE]
 install.packages(pack_u_uninstalled)
@@ -270,11 +270,6 @@ A continuación se muestra el data frame después de todos los tratamientos real
 
 ```{r cache=FALSE, echo=FALSE, comment=""}
 
-df %>% 
-kable() %>%
-kable_paper() %>%
-scroll_box(width = "800px", height = "300px")
-
 df$no[is.na(df$no)]<-0
 df$refugio[is.na(df$refugio)]<-""
 df$municipio[is.na(df$municipio)]<-""
@@ -290,6 +285,11 @@ df$telefono[is.na(df$telefono)]<-""
 df$latitud_val[is.na(df$latitud_val)]<-0
 df$longitud_val[is.na(df$longitud_val)]<-0
 df$telefonos[is.na(df$telefonos)]<-""
+
+df %>% 
+kable() %>%
+kable_paper() %>%
+scroll_box(width = "800px", height = "300px")
 
 cat("\n\n")
 
@@ -309,6 +309,42 @@ completitud %>%
 
 ## Mapa de la ubicación de los refugios
 
+A continuación se marcan los puntos que son refugios en el estado de Nayarit. Mientras más intenso es el color, mayor es la capacidad de personas que puede albergar el refugio.
+
+```{bash cache=TRUE,include=FALSE}
+
+curl -o estados.zip https://www.inegi.org.mx/contenidos/productos/prod_serv/contenidos/espanol/bvinegi/productos/geografia/marc_geo/702825292812_s.zip
+unzip estados.zip
+unzip mge2010v5_0.zip
+mkdir estados
+mv Entidades* estados
+cd estados
+ogr2ogr states.shp Entidades_2010_5.shp -t_srs "+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0"
+```
+
+```{r cache=TRUE,include=FALSE}
+
+mexico <- readOGR(dsn = "./estados", layer = "states", encoding = "UTF-8")
+nayarit<-which(mexico@data$NOM_ENT=="Nayarit")
+map <- mexico@polygons[[nayarit]]
+
+```
+
+```{r cache=FALSE,echo=FALSE}
+pal <- colorBin("Reds",log(df$capacidad_personas))
+leaflet(data = map) %>%
+  addTiles() %>%
+  addPolygons(
+    fillOpacity = 0.8, 
+    smoothFactor = 0.5,
+    color = "#BDBDC3", 
+    weight = 1) %>%
+  addCircleMarkers(-df$longitud_val,df$latitud_val,
+                   radius=1,
+                   color=pal(log(df$capacidad_personas)))
+
+
+```
 
 
 
