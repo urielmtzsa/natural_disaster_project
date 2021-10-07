@@ -1,7 +1,7 @@
 ##### Instalación y carga de paqueterías
 
 # Librerías a utilizar. Si no se tiene alguna, se instala.
-pack_u<-c("rstudioapi","readxl","dplyr","knitr","kableExtra","ggplot2","tidyr","leaflet","rgdal","shiny")
+pack_u<-c("rstudioapi","readxl","dplyr","knitr","kableExtra","ggplot2","tidyr","leaflet","rgdal","shiny","osrm","rdist")
 pack_u_installed<-pack_u %in% installed.packages()
 pack_u_uninstalled<-pack_u[pack_u_installed==FALSE]
 install.packages(pack_u_uninstalled)
@@ -109,7 +109,5 @@ df$telefono[is.na(df$telefono)]<-""
 df$latitud_val[is.na(df$latitud_val)]<-0
 df$longitud_val[is.na(df$longitud_val)]<-0
 df$telefonos[is.na(df$telefonos)]<-""
-
-
 
 
