@@ -1,6 +1,6 @@
-# Proyecto Respuesta Desastres
+* Proyecto Respuesta Desastres
 
-## Integrantes del equipo
+** Integrantes del equipo
 
 | Nombre                         |     CU    | Mail                     | Usuario Gh |
 |--------------------------------+-----------+--------------------------+------------|
