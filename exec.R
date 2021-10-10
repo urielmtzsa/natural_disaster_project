@@ -18,8 +18,9 @@ source(paste(getwd(),"/proyecto1_etl.R",sep=""))
 
 ##### Ejecución de análisis exploratorio
 
-rmarkdown::render(
+out_path<-rmarkdown::render(
   paste(getwd(),'/proyecto_1_eda.Rmd',sep=""))
+browseURL(out_path)
 
 ##### Ejecución de app
 
