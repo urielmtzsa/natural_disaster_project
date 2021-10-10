@@ -30,4 +30,4 @@ docker pull urielmtzsa/r_project_1
 ```
 docker run -it  -p 9999:9999  urielmtzsa/r_project_1
 ```
-Y al abrir en tu navegador el host con el puerto **0.0.0.0:9999** se mostrará la app en ejecución.
+Y al abrir en tu navegador el host con el puerto [**0.0.0.0:9999**](http://0.0.0.0:9999) se mostrará la app en ejecución.
