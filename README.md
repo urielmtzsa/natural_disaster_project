@@ -1,14 +1,10 @@
-# Proyecto Respuesta Desastres
+# Refugios: Desastres Naturales
 
-## Integrantes del equipo
+## Autor
 
-Nombre | CU | Mail | Usuario Gh 
---- | --- | --- | ---
-Uriel Martínez Sánchez | 000202942 | umartin5@itam.mx | urielmtzsa 
+Uriel Martínez Sánchez
 
-## Explicación breve de lo que se hizo
+## Resumen
 
-## Dificultades
-
-## Conclusiones
+A partir de información de refugios de Nayarit dada en un excel, se crea un etl para extracción de información. Se realiza un documento que explica paso a paso lo hecho por el etl y un sencillo análisis exploratorio. Se realiza una app en shiny para encontrar el refugio más cercano dada una ubicación dada, además de proporcionar información del refugio al usuario.
 
