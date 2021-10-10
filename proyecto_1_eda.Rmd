@@ -1,5 +1,5 @@
 ---
-title: "Proyecto intermedio Estadística Computacional"
+title: "Refugios Nayarit"
 author: "Uriel Martínez Sánchez"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
@@ -23,7 +23,7 @@ Antes de comenzar el proyecto, lo primero es cargar todas las librerías necesar
 ```{r cache=FALSE, include=FALSE}
 
 #Código para instalar y cargar todas las librerías necesarias para trabajar el proyecto
-pack_u<-c("rstudioapi","readxl","dplyr","knitr","kableExtra","ggplot2","tidyr","leaflet","rgdal")
+pack_u<-c("rstudioapi","readxl","dplyr","knitr","kableExtra","ggplot2","tidyr","leaflet","rgdal","shiny","osrm","rdist")
 pack_u_installed<-pack_u %in% installed.packages()
 pack_u_uninstalled<-pack_u[pack_u_installed==FALSE]
 install.packages(pack_u_uninstalled)
@@ -316,6 +316,7 @@ A continuación se marcan los puntos que son refugios en el estado de Nayarit. M
 curl -o estados.zip https://www.inegi.org.mx/contenidos/productos/prod_serv/contenidos/espanol/bvinegi/productos/geografia/marc_geo/702825292812_s.zip
 unzip estados.zip
 unzip mge2010v5_0.zip
+rm *.zip
 mkdir estados
 mv Entidades* estados
 cd estados
